@@ -113,8 +113,6 @@ for(sample_name in to_stitch_filt) {
   ref_seq <- readDNAStringSet(str_glue("results/assembly/constructed_genomes/references/{ref_name}.fna"))
   writeXStringSet(c(ref_seq, final_seq), str_glue("results/assembly/constructed_genomes/for_inspection/{sample_name}-{ref_name}.fna"))
   writeXStringSet(final_seq, str_glue("results/assembly/constructed_genomes/{sample_name}_assembly.fna"))
-  # writeXStringSet(justified_contigs, str_glue("results/assembly/constructed_genomes/contig_pools/{sample_name}_contigs_{ref_name}.fna"))
-  # writeXStringSet(ref, str_glue("results/assembly/constructed_genomes/references/{ref_name}.fna"))
 }
 
 # Save assemblies into single file
@@ -161,6 +159,9 @@ final_genome_meta <- complete %>%
   left_join(checkv) %>%
   left_join(blast_parsed) %>%
   arrange(host_species, sample_id) %>%
-  mutate(pident = round(pident, 1))
+  mutate(pident = round(pident, 1),
+         perc_query_aligned = round(aln_length / genome_length * 100, 1)) %>%
+  select(-aln_length) %>%
+  relocate(genome_length, .after = 12)
 
 fwrite(final_genome_meta, "results/assembly/assembly_results.csv")

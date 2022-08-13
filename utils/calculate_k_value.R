@@ -5,11 +5,8 @@ require(data.table)
 require(foreach)
 require(Biostrings)
 require(stringr)
-fastas <- list.files("data/genomes/raw_genomes/", "*.fasta", full.names = T)
-fastas <- fastas[grepl("Delta|filtered", fastas)]
-dna <- foreach(fasta = fastas, .combine = "c") %do% {
-  readDNAStringSet(fasta)
-}
+
+dna <- readDNAStringSet("data/genomes/coronaviridae_n2118_novel_n9.080822.fna")
 
 length(unique(names(dna))) == length(names(dna))
 

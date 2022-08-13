@@ -1,0 +1,9 @@
+/mnt/c/Users/Cedric/Desktop/git_repos/bat-CoVs/results/assembly/constructed_genomes/1-GH087_assembly.fna
+/mnt/c/Users/Cedric/Desktop/git_repos/bat-CoVs/results/assembly/constructed_genomes/2-30B_assembly.fna
+/mnt/c/Users/Cedric/Desktop/git_repos/bat-CoVs/results/assembly/constructed_genomes/2-GH106_assembly.fna
+/mnt/c/Users/Cedric/Desktop/git_repos/bat-CoVs/results/assembly/constructed_genomes/4-126A_assembly.fna
+/mnt/c/Users/Cedric/Desktop/git_repos/bat-CoVs/results/assembly/constructed_genomes/5-129B_assembly.fna
+/mnt/c/Users/Cedric/Desktop/git_repos/bat-CoVs/results/assembly/constructed_genomes/Sample-18_assembly.fna
+/mnt/c/Users/Cedric/Desktop/git_repos/bat-CoVs/results/assembly/constructed_genomes/Sample-25_assembly.fna
+/mnt/c/Users/Cedric/Desktop/git_repos/bat-CoVs/results/assembly/constructed_genomes/Sample-30_assembly.fna
+/mnt/c/Users/Cedric/Desktop/git_repos/bat-CoVs/results/assembly/constructed_genomes/Sample-37_assembly.fna

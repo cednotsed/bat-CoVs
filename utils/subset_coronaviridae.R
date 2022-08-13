@@ -5,6 +5,7 @@ require(data.table)
 require(foreach)
 
 meta <- fread("data/metadata/coronaviridae_taxid11118_complete_exclude_provirus_040722/coronaviridae_metadata.csv") %>%
+  left_join(fread("data/metadata/coronaviridae_taxid11118_complete_exclude_provirus_040722/coronaviridae_genus_meta.csv")) %>%
   filter(Length > 22000)
 
 meta %>%

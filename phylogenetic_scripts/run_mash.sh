@@ -1,9 +1,8 @@
-genome_dir=./data/genomes
+genome_dir=../data/genomes
 
-fasta=$genome_dir/alpha_merged.050422.fasta
-#fasta=$genome_dir/beta_merged.050422.fasta
+fasta=$genome_dir/coronaviridae_n2118_novel_n9.080822.fna
 
-out_dir=./results/mash_out
+out_dir=../results/phylogenetic_out/mash_out
 
 out_path=$(echo $fasta|sed "s|\\.fasta||g"| sed "s|$genome_dir|$out_dir|g")
 
