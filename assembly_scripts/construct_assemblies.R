@@ -132,8 +132,9 @@ checkv <- fread("results/assembly/checkv_out/all_novel/completeness.tsv") %>%
   select(sample_id = contig_id, aai_completeness, checkv_quality, warnings) %>%
   mutate(aai_completeness = round(aai_completeness))
 
-blast_meta <- fread("results/blast_out/blast_all_novel_genomes.parsed.csv") %>% 
-  select(sample_id, GenBank_Title, pident, Accession, aln_length, bitscore)
+blast_meta <- fread("results/blast_out/blast_all_novel_genomes.parsed.csv") %>%
+  mutate(qcov = qend - qstart + 1) %>%
+  select(sample_id, GenBank_Title, pident, Accession, bitscore, qcov)
 
 blast_morsels <- foreach(sample_name = unique(blast_meta$sample_id)) %do% {
   blast_meta %>% 
@@ -160,8 +161,8 @@ final_genome_meta <- complete %>%
   left_join(blast_parsed) %>%
   arrange(host_species, sample_id) %>%
   mutate(pident = round(pident, 1),
-         perc_query_aligned = round(aln_length / genome_length * 100, 1)) %>%
-  select(-aln_length) %>%
+         perc_query_aligned = round(qcov / genome_length * 100, 1)) %>%
+  select(-qcov) %>%
   relocate(genome_length, .after = 12)
 
 fwrite(final_genome_meta, "results/assembly/assembly_results.csv")
