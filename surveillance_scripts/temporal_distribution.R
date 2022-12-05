@@ -5,8 +5,10 @@ require(data.table)
 require(foreach)
 require(randomcoloR)
 
-df <- fread("data/metadata/sample_collection_metadata.parsed.csv", header = T) %>% 
-  mutate(collection_date = as.Date(collection_date, format = "%d/%m/%Y"))
+df <- fread("results/surveillance_out/sample_locations.csv", header = T) %>% 
+  rename_all(~tolower(gsub(" ", "_", .x))) %>%
+  mutate(collection_date = as.Date(collection_date, format = "%d/%m/%Y")) %>%
+  filter(sequencing_id != "")
 
 df_counts <- df %>%
   group_by(host_species) %>%
@@ -23,6 +25,7 @@ pal
 
 # Plot temporal distribution
 plot_df %>%
+  filter(sequencing_id != "") %>%
   mutate(host_species_lab = factor(host_species_lab, unique(plot_df$host_species_lab))) %>%
   ggplot(aes(x = collection_date, fill = host_species_lab)) +
   geom_density() +
@@ -34,8 +37,8 @@ plot_df %>%
   scale_fill_manual(values = pal) +
   theme_bw() + 
   theme(legend.position = "none",
-        panel.spacing.x=unit(0, "lines") , 
-        panel.spacing.y=unit(0.1, "lines"),
+        panel.spacing.x = unit(0, "lines") , 
+        panel.spacing.y = unit(0.1, "lines"),
         strip.text.y.left = element_text(angle = 0, face = "italic"),
         strip.background = element_rect(fill = "white"),
         axis.text.y = element_blank(),
@@ -46,4 +49,5 @@ plot_df %>%
 
   ggsave("results/surveillance_out/temporal_distribution.pdf", dpi = 600, width = 5.5, height = 4.5)
 
+  plot_df %>% summarise(range(collection_date))
 

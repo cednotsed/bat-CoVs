@@ -5,13 +5,12 @@ require(data.table)
 require(foreach)
 require(ape)
 
-meta_dir <- "data/metadata"
-prokka_dir <- "data/proteins/prokka_proteins"
+prokka_dir <- "results/prokka_out"
 out_dir <- "data/proteins/extracted_spikes"
 fastas <- list.files(prokka_dir, ".faa", recursive = T, full.names = T)
 # fastas <- fastas[!grepl("0813", fastas)]
 
-faa_groups <- list(sarbecovirus = c("NC_045512", "NC_004718", "MZ937003", "MN996532",
+faa_groups <- list(sarbecovirus = c("NC_045512", "NC_004718", "MZ937000", "MN996532",
                                     "1-GH087", "2-GH106", "2-30B", "Sample-18"),
                    mers = c("NC_019843", "5-129B"))
 extracted <- c()
@@ -24,7 +23,7 @@ for(i in seq(length(faa_groups))) {
   acc_paths
   
   spikes <- foreach(faa_path = acc_paths, .combine = "c") %do% {
-    isolate_name <- str_split(faa_path, "/")[[1]][4]
+    isolate_name <- str_split(faa_path, "/")[[1]][3]
     fasta <- read.FASTA(faa_path, type = "AA")
     spike <- fasta[grepl("Spike", names(fasta))]
     names(spike) <- isolate_name

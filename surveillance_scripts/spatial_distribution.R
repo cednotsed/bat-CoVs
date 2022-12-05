@@ -1,12 +1,12 @@
 rm(list = ls())
 setwd("../Desktop/git_repos/bat-CoVs/")
-require(tidyverse)
 require(data.table)
 require(foreach)
 require(randomcoloR)
 require(sf)
 require(raster)
 require(ggrepel)
+require(tidyverse)
 
 # Get GADM UK regions
 uk <- st_as_sf(getData("GADM", country="GBR", level=1)) %>%
@@ -39,11 +39,16 @@ cities <- cities %>%
 
 # Get bat collection locations
 loc_dat <- fread("results/surveillance_out/sample_locations.csv", header = T) %>%
-  separate(coords, into = c("lat", "lon"), sep = ", ") %>%
+  as_tibble() %>%
+  rename_all(~tolower(gsub(" ", "_", .x))) %>%
+  filter(sequencing_id != "") %>% 
+  separate(coords, into = c("lat", "lon"), sep = ", ") %>% 
+  filter(grepl("\\.", lat)) %>% 
   mutate(lat = as.numeric(lat),
          long = as.numeric(lon)) %>% 
-  filter(!is.na(lat)) %>%
-  select(sample_id, lat, lon)
+  dplyr::select(sample_id, lat, lon)
+
+loc_dat
 
 loc_dat <- st_as_sf(loc_dat, coords = c("lon", "lat"),
                    crs = 4326)

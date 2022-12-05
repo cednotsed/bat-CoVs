@@ -5,9 +5,15 @@ require(data.table)
 require(foreach)
 require(Biostrings)
 
-best_hits <- fread("results/blast_out/best_contig_hits_to_reference.csv") %>% 
+# best_hits <- fread("results/blast_out/best_contig_hits_to_reference.csv") %>% 
+#   as_tibble()
+# parsed <- fread("results/blast_out/blast_contigs.parsed.csv")
+
+best_hits <- fread("results/blast_out/best_qc_contig_hits_to_reference.csv") %>% 
+  filter(contig_length > 500) %>%
   as_tibble()
-parsed <- fread("results/blast_out/blast_contigs.parsed.csv")
+
+parsed <- fread("results/blast_out/blast_qc_contigs.parsed.csv")
 
 # Get best scaffolds for each sample
 match_list <- best_hits %>% 
@@ -24,23 +30,26 @@ best_match_df <- bind_rows(best_sample_match)
 
 # Get complete genomes
 complete <- best_match_df %>% filter(contig_length > 28000)
-
+complete
 complete_samples <- unique(complete$sample_id)
 
 for(sample_name in complete_samples) {
-  contigs <- readDNAStringSet(str_glue("results/assembly/coronaspades_out/scaffolds/{sample_name}_scaffolds.fasta"))
+  contigs <- readDNAStringSet(str_glue("results/assembly_qced/coronaspades_out/scaffolds/{sample_name}_scaffolds.fasta"))
   contig_name <- complete %>% filter(sample_id == sample_name)
   contig_name <- contig_name$contig_id
-  complete_genome <- contigs[contig_name]
+  complete_genome <- contigs[grepl(contig_name, names(contigs))]
   names(complete_genome) <- sample_name
-  writeXStringSet(complete_genome, str_glue("results/assembly/constructed_genomes/{sample_name}_assembly.fna"))
+  old <- readDNAStringSet(str_glue("results/assembly/constructed_genomes/{sample_name}_assembly.fna"))
+  # writeXStringSet(complete_genome, str_glue("results/assembly/constructed_genomes/{sample_name}_assembly.fna"))
+  writeXStringSet(complete_genome, str_glue("results/assembly_qced/constructed_genomes/{sample_name}_assembly.fna"))
+  writeXStringSet(c(complete_genome, old), str_glue("results/assembly_qced/constructed_genomes/for_inspection/{sample_name}_assembly.new_old_comparison.fna"))
 }
 
 # Get best candidate scaffold > 10000 as primary
 incomplete <- best_match_df %>% filter(contig_length < 28000)
-primary_scaffold <- incomplete %>% filter(contig_length > 2000)
+primary_scaffold <- incomplete %>% filter(contIig_length > 10000)
 to_stitch <- primary_scaffold$sample_id
-to_stitch_filt <- to_stitch[to_stitch != "3-32A"]
+# to_stitch_filt <- to_stitch[to_stitch != "3-32A"]
 
 # Plot scaffolds on reference
 plot_morsels <- foreach (sample_name = to_stitch) %do% {
@@ -60,7 +69,7 @@ plot_morsels <- foreach (sample_name = to_stitch) %do% {
 }
 
 ggpubr::ggarrange(plotlist = plot_morsels, nrow = length(to_stitch))
-ggsave("results/assembly/contig_on_reference_plots/to_stitch.pdf", width = 8, height = 10)
+ggsave("results/assembly_qced/contig_on_reference_plots/to_stitch.pdf", width = 8, height = 10)
 
 # Contigs to remove
 to_remove <- c("NODE_648_length_260_cluster_677_candidate_1_domains_1", 
@@ -75,9 +84,11 @@ pool_morsels <- foreach(sample_name = to_stitch_filt) %do% {
     select(sample_id, Accession, contig_id, sstart, send, contig_length) %>%
     arrange(sstart)
 }
-
-all_contigs <- bind_rows(pool_morsels) %>% 
-  filter(!(contig_id %in% to_remove))
+pool_morsels
+all_contigs <- bind_rows(pool_morsels)
+  filter((contig_id %in% c("NODE_82_length_4702_cov_2345", "NODE_1_length_24539_cov_2655")))
+  
+all_contigs %>% filter(grepl("NODE_612_length_2699_cov_29332|NODE_604_length_2720_cov_4995", contig_id))
 
 # Get contig pools for genomes
 for(sample_name in to_stitch_filt) {
@@ -93,27 +104,28 @@ for(sample_name in to_stitch_filt) {
   ref_name <- ref_name$Accession
   
   ref <- readDNAStringSet(str_glue("data/genomes/coronaviridae_taxid11118_complete_exclude_provirus_040722/coronaviridae.n2089_subset/{ref_name}.fna"))
-  contigs <- readDNAStringSet(str_glue("results/assembly/coronaspades_out/scaffolds/{sample_name}_scaffolds.fasta"))
-  
+  contigs <- readDNAStringSet(str_glue("results/assembly_qced/coronaspades_out/scaffolds/{sample_name}_scaffolds.fasta"))
+  names(contigs) <- str_split(names(contigs), "\\.", simplify = T)[, 1]
   # Forward sequences
   contigs_F <- contigs[names(contigs) %in% (sample_contigs_df %>% filter(plus))$contig_id]
   contigs_R <- contigs[names(contigs) %in% (sample_contigs_df %>% filter(!plus))$contig_id]
   contigs_R_rc <- reverseComplement(contigs_R)
   
   justified_contigs <- c(contigs_F, contigs_R_rc)
-  
+  justified_contigs
   # Stitch genomes
   contig_order <- sample_contigs_df$contig_id
   seq_string <- foreach(contig_name = contig_order, .combine = "c") %do% {
     justified_contigs[[contig_name]]
   }
-
+  
   final_seq <- DNAStringSet(seq_string)
   names(final_seq) <- sample_name
   final_seq
+  old <- readDNAStringSet(str_glue("results/assembly/constructed_genomes/2-30B_assembly.fna"))
   ref_seq <- readDNAStringSet(str_glue("results/assembly/constructed_genomes/references/{ref_name}.fna"))
-  writeXStringSet(c(ref_seq, final_seq), str_glue("results/assembly/constructed_genomes/for_inspection/{sample_name}-{ref_name}.fna"))
-  writeXStringSet(final_seq, str_glue("results/assembly/constructed_genomes/{sample_name}_assembly.fna"))
+  writeXStringSet(final_seq, str_glue("results/assembly_qced/constructed_genomes/{sample_name}_assembly.fna"))
+  writeXStringSet(c(ref_seq, final_seq, old), str_glue("results/assembly_qced/constructed_genomes/for_inspection/{sample_name}-{ref_name}.fna"))
 }
 
 # Save assemblies into single file
@@ -145,7 +157,7 @@ blast_morsels <- foreach(sample_name = unique(blast_meta$sample_id)) %do% {
 }
 
 blast_parsed <- bind_rows(blast_morsels) %>%
- select(-bitscore)
+  select(-bitscore)
 
 incomplete_parsed <- all_contigs %>% 
   filter(!(contig_id %in% to_remove)) %>%
@@ -166,4 +178,5 @@ final_genome_meta <- complete %>%
   select(-qcov) %>%
   relocate(genome_length, .after = 12)
 
-fwrite(final_genome_meta, "results/assembly/assembly_results.csv")
+fwrite(final_genome_meta, "results/assembly_qced/assembly_results.csv")
+

@@ -1,6 +1,6 @@
 genome_dir=../data/genomes
 
-fasta=$genome_dir/coronaviridae_n2118_novel_n9.080822.fna
+fasta=$genome_dir/coronaviridae_n2118.080822.with_novel.fna
 
 out_dir=../results/phylogenetic_out/mash_out
 

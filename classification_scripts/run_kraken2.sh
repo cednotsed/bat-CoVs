@@ -20,10 +20,10 @@ db=$wkdir/databases/k2_viral_20220607
 #Classification
 for fq1 in $fastq_dir/*R1*
 do
-	fq2=$(echo $fq1| sed "s|R1|R2|g")
+        fq2=$(echo $fq1| sed "s|R1|R2|g")
     prefix=$(echo $fq1|sed "s|$fastq_dir/||g"| cut -d'_' -f1)
     echo $prefix
-	out_path=$out_dir/$prefix.tsv
+        out_path=$out_dir/$prefix.tsv
 
     kraken2 \
         --threads $n_threads\

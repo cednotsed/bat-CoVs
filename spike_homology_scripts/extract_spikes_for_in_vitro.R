@@ -4,7 +4,7 @@ require(data.table)
 require(foreach)
 require(ape)
 
-prefixes <- list.dirs("results/spike_homology_out/prokka_annotations", full.names = T)
+prefixes <- list.dirs("results/zoonotic_assesment/prokka_annotations", full.names = T)
 prefixes <- prefixes[!grepl(".fna", prefixes)]
 prefixes <- prefixes[2:length(prefixes)]
 prefixes

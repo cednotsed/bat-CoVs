@@ -9,13 +9,16 @@ require(ggnewscale)
 require(ggutils)
 require(randomcoloR)
 
-cm <- read.csv(str_glue("results/phylogenetic_out/mash_out/coronaviridae_n2118_novel_n9.080822.fna.tsv"), sep = "\t", 
+cm <- read.csv(str_glue("results/phylogenetic_out/mash_out/coronaviridae_n2118.080822.with_novel.fna.tsv"), sep = "\t", 
                header = T,
                row.names = 1,
                stringsAsFactors = F)
 
 cm <- data.matrix(cm)
 tree <- nj(cm)
+
+# Parse tip labels
+tree$tip.label <- gsub("\\.1|\\.2|\\.3|\\.4", "", tree$tip.label)
 
 # Get tree metadata
 meta <- read.csv(str_glue("data/metadata/all_meta.n2127.080822.csv"), check.names = F, stringsAsFactors = F)
@@ -33,6 +36,7 @@ write.tree(annot_tree, "data/trees/coronaviridae_NJ_mash.annotated.tree")
 outgrp <- meta %>% filter(genus == "Deltacoronavirus")
 outgrp <- outgrp$accession
 rooted <- root(tree, outgroup = outgrp, resolve.root = T)
+write.tree(rooted, "data/trees/coronaviridae_NJ_mash.rooted.tree")
 
 # Save genbank_title annotated tree
 new_labels <- tibble(accession = tree$tip.label) %>%

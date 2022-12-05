@@ -1,6 +1,6 @@
 db=./checkv-db-v1.2
 db=../databases/checkv-db-v1.2/
-assembly_dir=../results/assembly/
+assembly_dir=../results/assembly/constructed_genomes/novel_genomes_to_send
 out_dir=../results/assembly/checkv_out
 
 for i in $assembly_dir/all_novel*

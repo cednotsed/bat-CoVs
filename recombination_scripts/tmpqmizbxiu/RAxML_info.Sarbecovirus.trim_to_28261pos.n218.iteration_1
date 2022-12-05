@@ -1,0 +1,133 @@
+
+
+IMPORTANT WARNING: Sequences GU190215 and NC_014470 are exactly identical
+
+
+IMPORTANT WARNING: Sequences MT726043 and MT726044 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_410538 and MT040333 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_410540 and MT040335 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_410542 and MT072864 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_410541 and MT040336 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_410539 and MT040334 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_402131 and MN996532 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_4302644 and MZ937000 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_4302645 and MZ937001 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_4302647 and MZ937003 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_1663616 and MZ081381 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_1663616 and EPI_ISL_1699446 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_4302646 and MZ937002 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_4302648 and MZ937004 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_1699444 and MZ081380 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_1699448 and MZ081378 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_1699445 and MZ081376 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_1699443 and MZ081379 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_1699449 and MZ081382 are exactly identical
+
+
+IMPORTANT WARNING: Sequences EPI_ISL_1699447 and MZ081377 are exactly identical
+
+
+IMPORTANT WARNING: Sequences DQ084200 and DQ022305 are exactly identical
+
+
+IMPORTANT WARNING: Sequences MT782114 and MT782115 are exactly identical
+
+
+IMPORTANT WARNING: Sequences OK017817 and OK017818 are exactly identical
+
+IMPORTANT WARNING
+Found 24 sequences that are exactly identical to other sequences in the alignment.
+Normally they should be excluded from the analysis.
+
+Just in case you might need it, an alignment file with 
+sequence duplicates removed is printed to file /mnt/c/Users/Cedric/Desktop/git_repos/bat-CoVs/recombination_scripts/Sarbecovirus.trim_to_28261pos.n218.aln.phylip.reduced
+
+
+Using BFGS method to optimize GTR rate parameters, to disable this specify "--no-bfgs" 
+
+
+
+This is RAxML version 8.2.12 released by Alexandros Stamatakis on May 2018.
+
+With greatly appreciated code contributions by:
+Andre Aberer      (HITS)
+Simon Berger      (HITS)
+Alexey Kozlov     (HITS)
+Kassian Kobert    (HITS)
+David Dao         (KIT and HITS)
+Sarah Lutteropp   (KIT and HITS)
+Nick Pattengale   (Sandia)
+Wayne Pfeiffer    (SDSC)
+Akifumi S. Tanabe (NRIFS)
+Charlie Taylor    (UF)
+
+
+Alignment has 14246 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 0.58%
+
+RAxML rapid hill-climbing mode
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+Executing 1 inferences on the original alignment using 1 distinct randomized MP trees
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heterogeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 14246
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+raxmlHPC-AVX2 -p 9819 -safe -m GTRGAMMA -f d -p 1 -s /mnt/c/Users/Cedric/Desktop/git_repos/bat-CoVs/recombination_scripts/Sarbecovirus.trim_to_28261pos.n218.aln.phylip -n Sarbecovirus.trim_to_28261pos.n218.iteration_1 
+
+
+Partition: 0 with name: No Name Provided
+Base frequencies: 0.289 0.217 0.183 0.311 
+
